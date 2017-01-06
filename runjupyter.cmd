@@ -1,1 +1,1 @@
-docker run -it -p 8800:8800 cl-jupyter:1 jupyter notebook --NotebookApp.token='' --port 8800
+docker run -it -p 8888:8888 -v c:/notebooks:/root/notebooks cl-jupyter:1 jupyter notebook --no-browser --NotebookApp.token='' --ip '*' --port 8888

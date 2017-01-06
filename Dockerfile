@@ -40,5 +40,6 @@ RUN pip3 install jupyter
 WORKDIR /root
 RUN cd /root && git clone https://github.com/fredokun/cl-jupyter.git && cd cl-jupyter && python3 ./install-cl-jupyter.py && sbcl --load ./cl-jupyter.lisp
 
-CMD jupyter notebook --NotebookApp.token=''
+EXPOSE 8888
+CMD jupyter notebook --no-browser --NotebookApp.token='' --ip '*' --port 8888
 
