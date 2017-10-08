@@ -19,7 +19,7 @@ RUN rm /tmp/* -rf
 
 # -----------------------
 # sbcl with quicklist
-RUN wget http://prdownloads.sourceforge.net/sbcl/sbcl-1.3.13-x86-64-linux-binary.tar.bz2 -O /tmp/sbcl.tar.bz2 && \
+RUN wget http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.0-x86-64-linux-binary.tar.bz2 -O /tmp/sbcl.tar.bz2 && \
     mkdir /tmp/sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /tmp/sbcl/ && \
     cd /tmp/sbcl && \
@@ -32,6 +32,8 @@ RUN wget http://beta.quicklisp.org/quicklisp.lisp
 
 RUN sbcl --non-interactive --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(setq  ql-util::*do-not-prompt* t)" --eval "(ql:add-to-init-file)"
 
+RUN sbcl --non-interactive --eval '(ql:quickload "alexandria")' --eval '(ql:quickload "trivial-features")' --eval '(ql:quickload "babel")'
+
 # -----------------------
 # cl-jupyter
 RUN pip3 install ipython
@@ -41,5 +43,4 @@ WORKDIR /root
 RUN cd /root && git clone https://github.com/fredokun/cl-jupyter.git && cd cl-jupyter && python3 ./install-cl-jupyter.py && sbcl --load ./cl-jupyter.lisp
 
 EXPOSE 8888
-CMD jupyter notebook --no-browser --NotebookApp.token='' --ip '*' --port 8888
-
+CMD jupyter notebook --allow-root --no-browser --NotebookApp.token='' --ip '*' --port 8888
